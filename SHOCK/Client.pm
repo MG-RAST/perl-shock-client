@@ -681,7 +681,7 @@ sub upload_temporary_files {
 	return;
 }
 
-#make node readable to the world
+#make node readable/public to the world
 sub permisson_readable {
 	my ($self, $nodeid) = @_;
 	
@@ -705,6 +705,12 @@ sub permisson_readable {
 		unless ($node_accls_delete->{'status'} == 200) {
 			return undef;
 		}
+	}
+
+	my $public_read = $self->push('node/'.$nodeid.'/acl/public_read') || return undef;
+	#print Dumper($public_read);
+	unless ($public_read->{'status'} == 200) {
+		return undef;
 	}
 
 	
